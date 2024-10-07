@@ -3,14 +3,16 @@ extends Node
 @onready var server_connection : Node = $ServerConnection
 @onready var debug_panel : Panel = $CanvasLayer/DebugPanel
 
-func _ready() -> void:
-	var email : String = "email@email.ru"
-	var password : String = "password"
+func _ready() -> void:	
+	Events.login_to_server.connect(handle_login_to_server)
 	
-	debug_panel.write_message("Auth user %s" % email)
-	var result : int = await  server_connection.auth_async(email, password)
+func handle_login_to_server(email : String, password : String, need_create : bool) -> void:
+	
+	Events.show_login_error.emit("Auth user %s" % email)
+
+	var result : int = await  server_connection.auth_async(email, password, need_create)
 	
 	if result == OK:
-		debug_panel.write_message("Auth user %s success" % email)
+		Events.show_login_error.emit("Auth user %s success" % email)
 	else:
-		debug_panel.write_message("Could not auth user %s" % email)
+		Events.show_login_error.emit("Could not auth user %s" % email)

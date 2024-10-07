@@ -1,0 +1,132 @@
+[gd_scene load_steps=4 format=3 uid="uid://dj4107t3owik7"]
+
+[ext_resource type="Script" path="res://src/main/login_and_register.gd" id="1_lv2y2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3v23"]
+bg_color = Color(0.32549, 0.619608, 0.905882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_to50n"]
+bg_color = Color(0.32625, 0.619119, 0.906162, 1)
+
+[node name="LoginUI" type="Node"]
+script = ExtResource("1_lv2y2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 300
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 280
+
+[node name="Panel" type="Panel" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 7
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 1
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Email"
+
+[node name="EmailEditLine" type="LineEdit" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "enter you email here"
+
+[node name="Label2" type="Label" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Password"
+
+[node name="PasswordEditLine" type="LineEdit" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "enter you password here"
+
+[node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="RememberCheckBox" type="CheckBox" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer/HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+text = "Remember me"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="LoginButton" type="Button" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_o3v23")
+text = "Log in"
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RegisterButton" type="Button" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_to50n")
+text = "Register"
+
+[node name="Panel" type="Panel" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DebugLabel" type="Label" parent="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer/LoginButton" to="." method="_on_login_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Panel/VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer2/RegisterButton" to="." method="_on_register_button_pressed"]
