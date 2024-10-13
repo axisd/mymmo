@@ -16,3 +16,11 @@ func handle_login_to_server(email : String, password : String, need_create : boo
 		Events.show_login_error.emit("Auth user %s success" % email)
 	else:
 		Events.show_login_error.emit("Could not auth user %s" % email)
+
+
+func handle_connect_to_server() -> void:
+	var result : int = await server_connection.connect_to_server_async()
+	if result == OK:
+		Events.show_login_error.emit("connected to server")
+	else:
+		Events.show_login_error.emit("could not connect")
