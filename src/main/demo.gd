@@ -24,3 +24,6 @@ func handle_connect_to_server() -> void:
 		Events.show_login_error.emit("connected to server")
 	else:
 		Events.show_login_error.emit("could not connect")
+		
+func handle_join_world() -> void:
+	var presences : Dictionary = await server_connection.join_world_async()

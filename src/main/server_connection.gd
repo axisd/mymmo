@@ -6,7 +6,8 @@ var _session: NakamaSession
 var _client : NakamaClient = Nakama.create_client(KEY, "127.0.0.1", 7350, "http")
 
 var _socket : NakamaSocket
-var _presences : Array
+var _world_id : String
+var _presences : Dictionary
 
 func auth_async(email : String, password : String, need_create : bool) -> int:
 	var result : int = OK
@@ -67,7 +68,26 @@ func _on_NakamaSocked_match_state() -> void:
 	
 func get_user_id() -> int:
 	return -1
-
+	
+func join_world_async() -> Dictionary:
+	var world: NakamaAPI.ApiRpc = await _client.rpc_async(_session, "get_world_id", "")
+	
+	if not world.is_exception():
+		_world_id = world.payload
+	
+	var match_join_result : NakamaRTAPI.Match = await _socket.join_match_async(_world_id)
+	if match_join_result.is_exception():
+		var exeption : NakamaException = match_join_result.get_exception()
+		printerr("Error joining the match: %s - %s" % [exeption.status_code, exeption.message])
+		return {}
+	
+	for presence in match_join_result.presences:
+		_presences[presence.user_id] = presence
+		
+	return _presences
+		
+		
+# ********************************************
 class SessionFile:
 	const AUTH : String = "res://auth"
 	
