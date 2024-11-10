@@ -1,5 +1,16 @@
 extends Node
 
+enum ReadPermissions {
+	NO_READ,
+	OWNER_READ,
+	PUBLIC_READ
+}
+
+enum WritePermissions {
+	NO_WRITE,
+	OWNER_WRITE
+}
+
 const KEY : String = "defaultkey"
 
 var _session: NakamaSession
@@ -86,7 +97,39 @@ func join_world_async() -> Dictionary:
 		
 	return _presences
 		
-		
+func write_characters_async(characters : Array = []) -> void:
+	await _client.write_storage_objects_async(
+		_session,
+		[
+			NakamaWriteStorageObject.new(
+				"player_data",
+				"characters",
+				ReadPermissions.OWNER_READ,
+				WritePermissions.OWNER_WRITE,
+				JSON.stringify({characters = characters}),
+				""
+			)
+		]
+	)
+	
+func get_characters_async() -> Array:
+	var storage_object : NakamaAPI.ApiStorageObjects = await _client.read_storage_objects_async(
+		_session, 
+		[
+			NakamaStorageObjectId.new(
+				"player_data",
+				"characters",
+				_session.user_id
+			)
+		]
+	)
+	
+	if storage_object.objects:
+		var decoded : Array = JSON.parse_string(storage_object.objects[0].value).result.characters
+		return decoded
+			
+	return []
+	
 # ********************************************
 class SessionFile:
 	const AUTH : String = "res://auth"

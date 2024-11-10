@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dj4107t3owik7"]
+[gd_scene load_steps=5 format=3 uid="uid://dj4107t3owik7"]
 
 [ext_resource type="Script" path="res://src/main/login_and_register.gd" id="1_lv2y2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_04r83"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3v23"]
 bg_color = Color(0.32549, 0.619608, 0.905882, 1)
@@ -24,6 +26,7 @@ theme_override_constants/margin_bottom = 280
 
 [node name="Panel" type="Panel" parent="MarginContainer"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_04r83")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel"]
 layout_mode = 1

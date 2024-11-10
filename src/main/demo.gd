@@ -6,6 +6,11 @@ extends Node
 func _ready() -> void:	
 	Events.login_to_server.connect(handle_login_to_server)
 	
+	var characters : Array = [
+		{name = "Jack", color = Color.BLUE.to_html(false)},
+		{name = "Lisa", color = Color.RED.to_html(false)},
+	]
+	
 func handle_login_to_server(email : String, password : String, need_create : bool) -> void:
 	
 	Events.show_login_error.emit("Auth user %s" % email)
