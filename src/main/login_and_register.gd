@@ -50,3 +50,4 @@ func _on_register_button_pressed() -> void:
 
 func handle_show_login_error(error : String) -> void:
 	error_label.text = error
+	print(error)

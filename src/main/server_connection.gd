@@ -1,5 +1,7 @@
 extends Node
 
+signal chat_message_received(username, text)
+
 enum ReadPermissions {
 	NO_READ,
 	OWNER_READ,
@@ -17,8 +19,9 @@ var _session: NakamaSession
 var _client : NakamaClient = Nakama.create_client(KEY, "127.0.0.1", 7350, "http")
 
 var _socket : NakamaSocket
-var _world_id : String
-var _presences : Dictionary
+var _world_id : String = ""
+var _channel_id : String = ""
+var _presences : Dictionary = {}
 
 func auth_async(email : String, password : String, need_create : bool) -> int:
 	var result : int = OK
@@ -61,8 +64,11 @@ func _on_NakamaSocked_connected() -> void:
 func _on_NakamaSocked_error(error: String) -> void:
 	_socket = null
 
-func _on_NakamaSocked_channel_message() -> void:
-	pass
+func _on_NakamaSocked_channel_message(message : NakamaAPI.ApiChannelMessage) -> void:
+	if message.code != 0:
+		return
+	var content : Dictionary = JSON.parse_string(message.content)
+	emit_signal("chat_message_received", message.username, content.msg)
 	
 func _on_NakamaSocked_match_presence(new_presence : NakamaRTAPI.MatchPresenceEvent) -> void:
 	for leave in new_presence.leaves:
@@ -97,6 +103,19 @@ func join_world_async() -> Dictionary:
 		
 	return _presences
 		
+func join_chat_async() -> int:
+	var chat_join_result : NakamaRTAPI.Channel = await _socket.join_chat_async("world", NakamaSocket.ChannelType.Room, false, false)
+	if not chat_join_result.is_exception():
+		_channel_id = chat_join_result.id
+		return OK
+	else:
+		return ERR_CONNECTION_ERROR
+		
+func send_text_async(text : String) -> int:
+	var send_text_result : NakamaRTAPI.ChannelMessageAck = await _socket.write_chat_message_async(_channel_id, {"msg" : text})
+	
+	return ERR_CONNECTION_ERROR if send_text_result.is_exception() else OK
+
 func write_characters_async(characters : Array = []) -> void:
 	await _client.write_storage_objects_async(
 		_session,
