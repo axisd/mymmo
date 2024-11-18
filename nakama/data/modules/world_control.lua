@@ -39,4 +39,14 @@ function world_control.match_loop(context, dispatcher, tick, state, grace_second
 	return state
 end
 
+-- Server is shutting down. Save positions of all existing characters to storage.
+function world_control.match_terminate(_, _, _, state, _)
+    return state
+end
+
+-- Called when the match handler receives a runtime signal.
+function world_control.match_signal(_, _, _, state, data)
+	return state, data
+end
+
 return world_control

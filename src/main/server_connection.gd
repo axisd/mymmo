@@ -1,6 +1,8 @@
 extends Node
 
 signal chat_message_received(username, text)
+signal user_joined(username)
+signal user_left(username)
 
 enum ReadPermissions {
 	NO_READ,
@@ -71,13 +73,14 @@ func _on_NakamaSocked_channel_message(message : NakamaAPI.ApiChannelMessage) -> 
 	emit_signal("chat_message_received", message.username, content.msg)
 	
 func _on_NakamaSocked_match_presence(new_presence : NakamaRTAPI.MatchPresenceEvent) -> void:
-	for leave in new_presence.leaves:
-		_presences.erase(leave.user_id)
+	for user_leave in new_presence.leaves:
+		_presences.erase(user_leave.user_id)
+		emit_signal("user_leaved", user_leave.username)
 		
-	for join in new_presence.joins:
-		if not join.user_id == get_user_id():
-			_presences[join.user_id] = join
-			
+	for user_join in new_presence.joins:
+		_presences[user_join.user_id] = user_join
+		emit_signal("user_joined", user_join.username)
+	
 	emit_signal("presences_changed")
 	
 func _on_NakamaSocked_match_state() -> void:

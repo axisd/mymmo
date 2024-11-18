@@ -62,9 +62,9 @@ func handle_join_chat() -> void:
 func _on_chat_ui_text_send(text: Variant) -> void:
 	var result : int = await server_connection.send_text_async(text)
 	if result == OK:
-		Events.show_login_error.emit("joined to chat")
+		Events.show_login_error.emit("msg sended to chat")
 	else:
-		Events.show_login_error.emit("could not join to chat")
+		Events.show_login_error.emit("could send msg to chat")
 
 func _on_server_connection_chat_message_received(username: Variant, text: Variant) -> void:
 	chat_box.add_reply(text, username, user_color)
